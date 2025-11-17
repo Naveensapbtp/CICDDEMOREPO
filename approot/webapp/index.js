@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/m/Button",
-	"sap/m/MessageToast"
-], (Button, MessageToast) => {
+	"sap/m/MessageToast",
+	"sap/m/MessageShow"
+], (Button, MessageToast,MessageShow) => {
 	"use strict";
 
 	new Button({
