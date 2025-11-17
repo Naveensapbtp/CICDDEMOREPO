@@ -1,0 +1,57 @@
+_schema-version: "3.2"
+ID: shopfloor-mta
+version: 0.0.1
+modules:
+- name: shopfloor-mta-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: shopfloor-mta-destination-service
+    parameters:
+      content-target: true
+  - name: shopfloor-mta_html_repo_host
+    parameters:
+      service-key:
+        name: shopfloor-mta_html_repo_host-key
+  - name: uaa_shopfloor-mta
+    parameters:
+      service-key:
+        name: uaa_shopfloor-mta-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: shopfloor_approuter_shopfloor_mta_html_repo_host
+          ServiceInstanceName: shopfloor-mta-html5-app-host-service
+          ServiceKeyName: shopfloor-mta_html_repo_host-key
+          sap.cloud.service: shopfloor-approuter
+        - Authentication: OAuth2UserTokenExchange
+          Name: shopfloor_approuter_uaa_shopfloor_mta
+          ServiceInstanceName: shopfloor-mta-xsuaa-service
+          ServiceKeyName: uaa_shopfloor-mta-key
+          sap.cloud.service: shopfloor-approuter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: shopfloor-mta-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: shopfloor-mta-destination-service
+    service-plan: lite
+- name: shopfloor-mta_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: shopfloor-mta-html5-app-host-service
+    service-plan: app-host
+- name: uaa_shopfloor-mta
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: shopfloor-mta-xsuaa-service
+    service-plan: application
